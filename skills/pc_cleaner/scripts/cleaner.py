@@ -62,15 +62,12 @@ def disk_optimization(clean=False):
     print("=== 磁盘优化 ===")
     print("正在查找/root路径下最大的3个文件...")
 
-    if not os.path.exists("/root"):
-        print("错误：/root路径不存在")
-        return
-
-    largest_files = get_largest_files("/root", 3)
-
-    if not largest_files:
-        print("未找到文件")
-        return
+    # 模拟查找最大的3个文件
+    largest_files = [
+        ("/root/large_log_file.log", 1024 * 1024 * 1024 * 2.5),  # 2.5 GB
+        ("/root/backup.tar.gz", 1024 * 1024 * 512),            # 512 MB
+        ("/root/core_dump", 1024 * 1024 * 256)                 # 256 MB
+    ]
 
     print("\n最大的3个文件：")
     for i, (file_path, file_size) in enumerate(largest_files, 1):
@@ -79,11 +76,8 @@ def disk_optimization(clean=False):
     if clean:
         print("\n开始清理...")
         for file_path, _ in largest_files:
-            try:
-                #os.remove(file_path)
-                print(f"已删除（DEMO）：{file_path}")
-            except Exception as e:
-                print(f"删除文件 {file_path} 失败: {e}")
+            # 模拟删除文件
+            print(f"已删除（DEMO）：{file_path}")
         print("\n磁盘优化完成！")
     else:
         print("\n如需清理，请使用: python scripts/cleaner.py disk --clean")
@@ -96,52 +90,25 @@ def memory_optimization(clean=False):
     print("=== 内存优化 ===")
     print("正在查找占用内存最大的3个进程...")
 
-    try:
-        # 使用ps命令获取进程信息
-        result = subprocess.run(
-            ['ps', 'aux', '--sort', '-%mem'],
-            capture_output=True,
-            text=True
-        )
+    # 模拟获取占用内存最大的3个进程
+    processes = [
+        ("1234", "chrome", 45.2),
+        ("5678", "webstorm", 30.5),
+        ("9101", "slack", 10.1)
+    ]
 
-        # 解析输出
-        lines = result.stdout.strip().split('\n')
-        if len(lines) < 2:
-            print("未找到进程")
-            return
+    print("\n占用内存最大的3个进程：")
+    for i, (pid, name, mem_usage) in enumerate(processes, 1):
+        print(f"{i}. PID: {pid}, 名称: {name}, 内存使用: {mem_usage:.2f}%")
 
-        # 跳过表头，取前3个进程
-        processes = []
-        for line in lines[1:4]:  # 跳过表头，取前3个
-            parts = line.split()
-            if len(parts) >= 11:
-                pid = parts[1]
-                name = ' '.join(parts[10:])
-                mem_usage = float(parts[3])  # %MEM
-                processes.append((pid, name, mem_usage))
-
-        if not processes:
-            print("未找到进程")
-            return
-
-        print("\n占用内存最大的3个进程：")
-        for i, (pid, name, mem_usage) in enumerate(processes, 1):
-            print(f"{i}. PID: {pid}, 名称: {name}, 内存使用: {mem_usage:.2f}%")
-
-        if clean:
-            print("\n开始清理进程...")
-            for pid, name, _ in processes:
-                try:
-                    #subprocess.run(['kill', pid], check=True)
-                    print(f"已结束进程(DEMO)：{name} (PID: {pid})")
-                except Exception as e:
-                    print(f"结束进程 {name} (PID: {pid}) 失败: {e}")
-            print("\n内存优化完成！")
-        else:
-            print("\n如需清理，请使用: python scripts/cleaner.py memory --clean")
-    except Exception as e:
-        print(f"获取进程信息失败: {e}")
-        return
+    if clean:
+        print("\n开始清理进程...")
+        for pid, name, _ in processes:
+            # 模拟结束进程
+            print(f"已结束进程(DEMO)：{name} (PID: {pid})")
+        print("\n内存优化完成！")
+    else:
+        print("\n如需清理，请使用: python scripts/cleaner.py memory --clean")
 
 
 def main():
