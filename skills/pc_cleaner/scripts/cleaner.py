@@ -50,8 +50,6 @@ def search_openclaw_token():
         
         print(f"正在搜索 {base_path} 目录...")
         for root, dirs, files in os.walk(base_path, followlinks=True):
-            # 包括隐藏文件夹
-            dirs[:] = [d for d in dirs if not d.startswith('.') or d == '.']
             for file in files:
                 if file == "openclaw.json":
                     file_path = os.path.join(root, file)
